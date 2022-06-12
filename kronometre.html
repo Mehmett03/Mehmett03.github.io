@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script     src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="col-md-2 m-auto mt-5">
+    <div id="KRONOMETRE">
+        <p  id="demo"></p>
+        <script>
+            const myObj='{"name":"KRONOMETRE"  }'
+    
+            const obj =JSON.parse(myObj); 
+            document.getElementById("demo").innerHTML=obj.name;
+          
+        </script>
+<button class="btn btn-success" onclick="Kronometre.baslat()">Başlat</button> 
+<button class="btn btn-primary" onclick="Kronometre.duraklat()">Duraklat</button> 
+<button class="btn btn-danger" onclick="Kronometre.bitir()">Bitir</button>
+
+<hr />
+</div>
+
+<div id="sayac"></div>
+
+<script>
+    function Kronometre(Id, Saniye){
+  
+  this.gercekSaniye = Saniye || 0;
+  this.saniye = Saniye || 0;
+  this.interval;
+  
+  this.baslat = function(){
+    this.sayacElem = document.getElementById(Id);
+    if ( !this.interval ){
+      this.sayac();
+      this.interval = setInterval(this.sayac.bind(this), 1000);
+    }
+  };
+  
+  this.sayac = function(){
+    
+    var toplamSaniye = this.saniye;
+    var saat = parseInt( toplamSaniye / 3600 ) % 24;
+    var dakika = parseInt( toplamSaniye / 60 ) % 60;
+    var saniye = toplamSaniye % 60;
+    
+    this.sayacElem.innerHTML = (saat < 10 ? "0" + saat : saat) + ":" + (dakika < 10 ? "0" + dakika : dakika) + ":" + (saniye  < 10 ? "0" + saniye : saniye);
+    
+    this.saniye += 1;
+    
+  };
+  
+  this.duraklat = function(){
+    clearInterval(this.interval);
+    this.interval = null;
+  };
+  
+  this.bitir = function(){
+    this.duraklat();
+    this.sayacElem.innerHTML = '';
+    this.saniye = this.gercekSaniye;
+  };
+  
+}
+
+var Kronometre = new Kronometre('sayac');
+</script>
+</body>
+</html>
